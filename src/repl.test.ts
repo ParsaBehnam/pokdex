@@ -7,6 +7,10 @@ describe.each([
         expected: ["where", "does", "a", "body", "end?"],
     },
     {
+    input: "  ",
+    expected: [],
+    },
+    {
         input: "     HELLO       WORLD!    ",
         expected: ["hello", "world!"],
     },

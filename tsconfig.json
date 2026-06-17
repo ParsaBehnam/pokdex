@@ -11,7 +11,7 @@
     "moduleResolution": "nodenext",
     "esModuleInterop": true,
     "target": "esnext",
-    "types": [],
+    "types": ["node"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -42,6 +42,7 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
   },
   "include": ["./src/**/*.ts"],
   "exclude": ["node_modules"]
