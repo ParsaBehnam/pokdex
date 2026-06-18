@@ -1,19 +1,11 @@
-import { createInterface } from "node:readline";
-import { commandExit } from "./command_exit.js";
-import type { CLIcommand } from "./command.js";
-import { commandHelp } from "./command_help.js";
-import { getCommands } from "./commands.js";
+import type { State, CLIcommand } from "./state.js";
 
-export function startREPL() {
-    const registry: Record<string, CLIcommand> = getCommands();
-
-    const rl = createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-
-    rl.setPrompt("Pokedex > ");
+export function startREPL(state: State): void {
+    const commands: Record<string, CLIcommand> = state.commands; 
+    const rl = state.readline;
+    
     rl.prompt();
+
     rl.on("line", async (input) => {
         if (!input) {
             rl.prompt();
@@ -21,19 +13,24 @@ export function startREPL() {
         } 
         
         const command = cleanInput(input)[0] as string;
-        const cmd = registry[command];
+        const cmd = commands[command];
+
         if (!cmd) {
             console.log(`Unknown command: "${command}". Type "help" for a list of commands`);
             rl.prompt();
             return;
         }
+
         if (cmd !== undefined) {
             try {
-                cmd.callback(registry);
+                cmd.callback(state);
                 rl.prompt();
+
             } catch(err) {
+
                 if (err instanceof Error) {
                     console.log(`an error occurred: ${err.message}`);
+
                 } else {
                     console.log(`an unknown error occurred ${err}`);
                 }
