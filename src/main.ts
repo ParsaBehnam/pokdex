@@ -3,8 +3,8 @@ import { initState } from "./state.js";
 import type { State } from "./state.js";
 
 async function main() {
-    const state: State = initState();
-    startREPL(state);
+    const state: State = await initState();
+    await startREPL(state);
 }
 
-main();
+await main();

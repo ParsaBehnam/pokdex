@@ -1,6 +1,6 @@
 import type { State, CLIcommand } from "./state.js";
 
-export function startREPL(state: State): void {
+export async function startREPL(state: State): Promise<void> {
     const commands: Record<string, CLIcommand> = state.commands; 
     const rl = state.readline;
     
