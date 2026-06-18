@@ -4,20 +4,44 @@ export class PokeAPI {
     constructor() {}
 
     async fetchLocations(pageURL?: string): Promise<ShallowLocations> {
-        const fullURL: string = pageURL ? pageURL : `${PokeAPI.#baseURL}/location-area/`;
-        const response = await fetch(fullURL, {
-            method: "GET",
-            mode: "cors"
-        });
-        const responseObj = await response.json();
+        const url: string = pageURL ? pageURL : `${PokeAPI.#baseURL}/location-area/`;
 
-        // console.log('API Response:', JSON.stringify(responseObj, null, 2));
-        
-        return responseObj;
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                mode: "cors"
+            });
+
+            if (!response.ok) {
+                throw new Error(`${response.status} ${response.statusText}`);
+            }
+
+            const locations: ShallowLocations = await response.json();
+            return locations;
+
+        } catch (err) {
+            throw new Error(`Error fetching locations: ${(err as Error).message}`);
+        }
     }
-    // @ts-ignore 
+
     async fetchLocation(locationName: string): Promise<Location> {
-        
+        const url = `${PokeAPI.#baseURL}/location-area/${locationName}`;
+
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                mode: "cors",
+            })
+
+            if (!response.ok) {
+                throw new Error(`${response.status} ${response.statusText}`);
+            }
+
+            const location: Location = await response.json();
+            return location;
+        } catch (err) {
+            throw new Error(`Error fetching location: ${(err as Error).message}`);
+        }
     }
 }
 
@@ -29,5 +53,54 @@ export type ShallowLocations = {
 };
 
 export type Location = {
-
+    encounter_method_rates: {
+    encounter_method: {
+      name: string;
+      url: string;
+    };
+    version_details: {
+      rate: number;
+      version: {
+        name: string;
+        url: string;
+      };
+    }[];
+  }[];
+  game_index: number;
+  id: number;
+  location: {
+    name: string;
+    url: string;
+  };
+  name: string;
+  names: {
+    language: {
+      name: string;
+      url: string;
+    };
+    name: string;
+  }[];
+  pokemon_encounters: {
+    pokemon: {
+      name: string;
+      url: string;
+    };
+    version_details: {
+      encounter_details: {
+        chance: number;
+        condition_values: any[];
+        max_level: number;
+        method: {
+          name: string;
+          url: string;
+        };
+        min_level: number;
+      }[];
+      max_chance: number;
+      version: {
+        name: string;
+        url: string;
+      };
+    }[];
+  }[];
 };

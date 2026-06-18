@@ -23,13 +23,11 @@ export async function initState(): Promise<State> {
         output: process.stdout,
         prompt: "Pokedex > ",
     });
-
-    const api: PokeAPI = new PokeAPI();
     
     return {
         readline: rl,
         commands: getCommands(),
-        api: api,
+        api: new PokeAPI(),
         nextLocationsURL: "",
         prevLocationsURL: "",
     };
