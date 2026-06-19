@@ -13,6 +13,7 @@ export async function startREPL(state: State): Promise<void> {
         } 
         
         const command = cleanInput(input)[0] as string;
+        const args: string[]= cleanInput(input).splice(1);
         const cmd = commands[command];
 
         if (!cmd) {
@@ -23,7 +24,7 @@ export async function startREPL(state: State): Promise<void> {
 
         if (cmd !== undefined) {
             try {
-                cmd.callback(state);
+                await cmd.callback(state, ...args);
                 rl.prompt();
 
             } catch(err) {
