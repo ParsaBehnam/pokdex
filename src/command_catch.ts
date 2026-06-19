@@ -18,5 +18,5 @@ export async function commandCatch(state: State, ...args: string[]): Promise<voi
     }
 
     state.inventory.set(pokemonName, pokemonObj);
-    console.log(`${pokemonName} was caught!`);
+    console.log(`${pokemonName} was caught!\nYou may now inspect it with the inspect command.`);
 }
