@@ -1,5 +1,5 @@
 import { Cache } from "./pokecache.js";
-
+import type { ShallowLocations, Location, Pokemon } from "./pokeapi.types.js";
 export class PokeAPI {
     static readonly #baseURL = "https://pokeapi.co/api/v2";
 
@@ -62,64 +62,32 @@ export class PokeAPI {
             throw new Error(`Error fetching location: ${(err as Error).message}`);
         }
     }
+
+    async fetchPokemon(pokemonName: string): Promise<Pokemon> {
+      const url = `${PokeAPI.#baseURL}/pokemon/${pokemonName}`;
+
+      const cached = this.#cache.get<Pokemon>(url);
+      if (cached) {
+        return cached;
+      }
+
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          mode: "cors",
+        });
+
+        if (!response.ok) {
+          throw new Error(`${response.status} ${response.statusText}`);
+        }
+
+        const pokemon: Pokemon = await response.json();
+        this.#cache.add<Pokemon>(url, pokemon);
+        return pokemon;
+
+      } catch (err) {
+          throw new Error(`Error fetching pokemon: ${(err as Error).message}`);
+      }
+    }
 }
 
-export type ShallowLocations = {
-    count: number;
-    next: string | null;
-    previous: string | null;
-    results: {name: string; url: string;}[];
-};
-
-export type Location = {
-    encounter_method_rates: {
-    encounter_method: {
-      name: string;
-      url: string;
-    };
-    version_details: {
-      rate: number;
-      version: {
-        name: string;
-        url: string;
-      };
-    }[];
-  }[];
-  game_index: number;
-  id: number;
-  location: {
-    name: string;
-    url: string;
-  };
-  name: string;
-  names: {
-    language: {
-      name: string;
-      url: string;
-    };
-    name: string;
-  }[];
-  pokemon_encounters: {
-    pokemon: {
-      name: string;
-      url: string;
-    };
-    version_details: {
-      encounter_details: {
-        chance: number;
-        condition_values: any[];
-        max_level: number;
-        method: {
-          name: string;
-          url: string;
-        };
-        min_level: number;
-      }[];
-      max_chance: number;
-      version: {
-        name: string;
-        url: string;
-      };
-    }[];
-  }[];
-};

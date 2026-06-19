@@ -1,10 +1,10 @@
 import type { State } from "./state.js"
-import type { Location } from "./pokeapi.js"
+import type { Location } from "./pokeapi.types.js"
 
 export async function commandExplore(state: State, ...args: string[]) {
     const input: string | undefined = args[0];
     if (!input) {
-    throw new Error("you must provide a location name");
+    throw new Error("you must provide a location name!");
   }
 
     const location = input;
