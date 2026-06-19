@@ -15,7 +15,7 @@ export type State = {
     api: PokeAPI;
     nextLocationsURL: string | null;
     prevLocationsURL: string | null;
-    pokedex: Record<string, Pokemon>;
+    inventory: Map<string, Pokemon>;
 };
 
 export async function initState(): Promise<State> {
@@ -32,6 +32,6 @@ export async function initState(): Promise<State> {
         api: new PokeAPI(),
         nextLocationsURL: "",
         prevLocationsURL: "",
-        pokedex: {},
+        inventory: new Map<string, Pokemon>(),
     };
 }

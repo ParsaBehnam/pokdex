@@ -17,6 +17,6 @@ export async function commandCatch(state: State, ...args: string[]): Promise<voi
         return;
     }
 
-    state.pokedex.pokemonName = pokemonObj;
+    state.inventory.set(pokemonName, pokemonObj);
     console.log(`${pokemonName} was caught!`);
 }

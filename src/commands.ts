@@ -3,7 +3,7 @@ import { commandExit } from "./command_exit.js";
 import { commandMap, commandMapB } from "./command_map.js";
 import { commandExplore } from "./command_explore.js";
 import { commandCatch } from "./command_catch.js"
-
+import { commandInspect } from "./command_inspect.js";
 import type { CLIcommand } from "./state.js";
 
 export function getCommands(): Record<string, CLIcommand> {
@@ -37,6 +37,11 @@ export function getCommands(): Record<string, CLIcommand> {
             name: "catch <pokemon_name>",
             description: "Attempt to catch a pokemon",
             callback: commandCatch,
+        },
+        inspect: {
+            name: "inspect <pokemon_name>",
+            description: "Check if a pokemon is in inventory and show it's stats",
+            callback: commandInspect,
         }
     };
 }
